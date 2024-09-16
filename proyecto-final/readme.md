@@ -17,34 +17,34 @@ Para crear un entorno virtual, ejecuta el siguiente comando:
   python -m venv venv
     ```
 - En Linux:
-```
-python3 -m venv venv
-```
+  ```
+  python3 -m venv venv
+  ```
 Activar Entorno VirtualPara activar el entorno virtual, usa el siguiente comando:
 - En Windows:
-```
-venv\Scripts\activate
-```
+  ```
+  venv\Scripts\activate
+  ```
 - En Linux:
-```
-source venv/bin/activate
-```
+  ```
+  source venv/bin/activate
+  ```
 Instalar DependenciasCon el entorno virtual activado, instala los paquetes necesarios ejecutando:
-```
-pip install -r requirements.txt
-```
+  ```
+  pip install -r requirements.txt
+  ```
 #### Configuración de la Base de Datos
 
 Crea un archivo .env en la raíz del proyecto con la variable DB_PATH. Ejemplo:
-```
-DB_PATH='seminario.db'
-```
+  ```
+  DB_PATH='seminario.db'
+  ```
 Ejecución del ProyectoPara ejecutar el proyecto, sigue estos pasos:
 - Navega al directorio del backend:
-```
-cd proyecto-final/backend
-```
+  ```
+  cd proyecto-final/backend
+  ```
 - Inicia la aplicación con Hypercorn:
-```
-hypercorn main:app
-```
+  ```
+  hypercorn main:app
+  ```
