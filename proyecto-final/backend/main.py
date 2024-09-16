@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 import logging
 from pathlib import Path
 
-from providers.database import BaseDeDatos
+from models.models import Base, SessionLocal, engine
 from custom_logging import CustomizeLogger
 from routes.productos import router as producto_router
 
@@ -48,10 +48,6 @@ async def some_middleware(request: Request, call_next):
     return Response(content=res_body, status_code=response.status_code, 
         headers=dict(response.headers), media_type=response.media_type, background=task)
 
-
-db = BaseDeDatos()
-Base, SessionLocal, engine = db.iniciar_conexion()
-
 try:
     Base.metadata.create_all(bind=engine)
 except Exception as err:
@@ -67,7 +63,7 @@ def get_db():
         db.close()
         
 @app.get("/")
-async def ping(db: Session = Depends(get_db)):
+async def ping():
     return 'pong'
 
 app.include_router(producto_router, prefix="/v1")
