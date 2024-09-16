@@ -46,13 +46,14 @@ async def obtener_productos(producto_id: Optional[int] = None, db: Session = Dep
 @router.post('/', tags=["Productos"])
 async def crear_producto(producto: ProductoSchemaCreate, db: Session = Depends(get_db)):
     try:
-        producto_db = db.add(Producto(
+        producto_db = Producto(
             codigo = producto.codigo,
             nombre = producto.nombre,
             descripcion = producto.descripcion,
             precio = producto.precio,
             foto = producto.foto
-        ))
+        )
+        db.add(producto_db)
         db.commit()
         db.refresh(producto_db)
         logger.info(producto_db)
