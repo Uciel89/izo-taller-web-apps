@@ -35,7 +35,7 @@ pip install -r requirements.txt
 ```
 #### Configuración de la Base de Datos
 
-Crea un archivo .env en la raíz del proyecto con la variable DB_PATH. Ejemplo:
+Crea un directorio uploads dentro del backend y un archivo .env en la raíz del proyecto con la variable DB_PATH. Ejemplo:
 ```
 DB_PATH='seminario.db'
 ```

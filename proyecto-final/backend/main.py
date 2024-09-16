@@ -37,17 +37,28 @@ def log_info(req_body, res_body):
 
 @app.middleware('http')
 async def some_middleware(request: Request, call_next):
+    if 'multipart/form-data' in request.headers.get('Content-Type', '') or 'x-www-form-urlencoded' in request.headers.get('Content-Type', ''):
+        response = await call_next(request)
+        return response
+
     req_body = await request.body()
     response = await call_next(request)
+    
     logging.info(request.headers)
+    
     res_body = b''
     async for chunk in response.body_iterator:
         res_body += chunk
-    
-    task = BackgroundTask(log_info, req_body, res_body)
-    return Response(content=res_body, status_code=response.status_code, 
-        headers=dict(response.headers), media_type=response.media_type, background=task)
 
+    if dict(response.headers).get('content-type') != 'image/png':
+        task = BackgroundTask(log_info, req_body, res_body)
+        return Response(content=res_body, status_code=response.status_code, 
+                        headers=dict(response.headers), 
+                        media_type=response.media_type, 
+                        background=task)
+    return Response(content=res_body, status_code=response.status_code, 
+                        headers=dict(response.headers), 
+                        media_type=response.media_type)
 try:
     Base.metadata.create_all(bind=engine)
 except Exception as err:
