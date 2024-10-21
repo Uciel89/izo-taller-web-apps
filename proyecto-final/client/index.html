@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+
+    <title>App Basica</title>
+  </head>
+  <body>
+    <!-- HEADE -->
+    <header class="d-flex flex-row justify-content-center mt-4">
+      <h1 class="fs-3">Aplicación de productos</h1>
+    </header>
+
+    <!-- TABLE -->
+    <section class="px-3">
+      <div class="card">
+        <div
+          class="card-header d-flex flex-row justify-content-between align-items-center"
+        >
+          <p class="mb-0">Lista de productos</p>
+          <button
+            class="btn btn-success"
+            type="button"
+            onclick="cleanInputs()"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+          >
+            Crear producto
+          </button>
+        </div>
+        <div class="card-body table-responsive">
+          <table class="table table-hover caption-top">
+            <thead>
+              <tr>
+                <th scope="col">CODIGO</th>
+                <th scope="col">NOMBRE</th>
+                <th scope="col">DESCRIPCIÓN</th>
+                <th scope="col">PRECIO</th>
+                <th scope="col">FOTO</th>
+                <th scope="col">ACCIONES</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Celular</td>
+                <td>Celular de alta gama</td>
+                <td>1500000</td>
+                <td>
+                  <img
+                    class="rounded-pill border"
+                    src="https://http2.mlstatic.com/D_NQ_NP_728848-MLA74017726443_012024-O.web"
+                    alt=""
+                    width="40"
+                    height="40"
+                  />
+                </td>
+                <td>
+                  <button
+                    class="btn btn-warning rounded-circle"
+                    onclick="openUpdateModal(this)"
+                    data-bs-toggle="modmodalal"
+                    data-bs-target="modalUpdateProduct"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-pencil-fill"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"
+                      />
+                    </svg>
+                  </button>
+                  <button
+                    class="btn btn-danger rounded-circle"
+                    onclick="openDeleteModal(this)"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-trash3"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"
+                      />
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODAL CREATE PRODUCT -->
+    <div
+      class="modal fade"
+      id="modalCreateProduct"
+      tabindex="-1"
+      aria-labelledby="modalCreateLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalCreateLabel">Crear producto</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <form class="modal-body" id="formCreateProduct" action="POST">
+            <div class="form-floating mb-3">
+              <input
+                type="number"
+                class="form-control"
+                id="floatingInputCodigo"
+                placeholder="1234"
+              />
+              <label for="floatingInputCodigo">Codigo</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="floatingInputNombre"
+                placeholder="example"
+              />
+              <label for="floatingInputNombre">Nombre</label>
+            </div>
+            <div class="form-floating mb-3">
+              <textarea
+                class="form-control"
+                placeholder="Descripción del producto"
+                id="floatingDescripcion"
+                style="height: 100px"
+              ></textarea>
+              <label for="floatingDescripcion">Descripción</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input
+                type="number"
+                class="form-control"
+                id="floatingInputPrecio"
+                placeholder="12345"
+              />
+              <label for="floatingInputPrecio">Precio</label>
+            </div>
+            <div class="mb-3">
+              <label for="formImage" class="form-label"
+                >Seleccione una foto del producto</label
+              >
+              <input
+                class="form-control"
+                type="file"
+                id="formImage"
+                accept="image/png, image/jpeg"
+              />
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cerrar
+              </button>
+              <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="modalUpdateProduct"
+      tabindex="-1"
+      aria-labelledby="modalEditLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalEditLabel">Editar producto</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <form class="modal-body" id="formUpdateProduct" action="PUT">
+            <div class="form-floating mb-3">
+              <input
+                type="number"
+                class="form-control"
+                id="floatingInputCodigo"
+                placeholder="1234"
+              />
+              <label for="floatingInputCodigo">Codigo</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="floatingInputNombre"
+                placeholder="example"
+              />
+              <label for="floatingInputNombre">Nombre</label>
+            </div>
+            <div class="form-floating mb-3">
+              <textarea
+                class="form-control"
+                placeholder="Descripción del producto"
+                id="floatingDescripcion"
+                style="height: 100px"
+              ></textarea>
+              <label for="floatingDescripcion">Descripción</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input
+                type="number"
+                class="form-control"
+                id="floatingInputPrecio"
+                placeholder="12345"
+              />
+              <label for="floatingInputPrecio">Precio</label>
+            </div>
+            <div class="mb-3">
+              <label for="formImage" class="form-label"
+                >Seleccione una foto del producto</label
+              >
+              <input
+                class="form-control"
+                type="file"
+                id="formImage"
+                accept="image/png, image/jpeg"
+              />
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cerrar
+              </button>
+              <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL DELETE PRODUCT-->
+    <div
+      class="modal fade"
+      id="modalDeleteProduct"
+      tabindex="-1"
+      aria-labelledby="modalDeleteLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="modalDeleteLabel">
+              ¿Estas seguro de eliminarlo?
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>Si lo eliminas, se borrara permanentemente!!</p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cerrar
+            </button>
+            <button type="button" class="btn btn-danger" id="deleteButton">
+              Eliminar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCRIPS -->
+    <script src="https://code.jquery.com/jquery-4.0.0-beta.2.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="./js/script.js"></script>
+  </body>
+</html>
