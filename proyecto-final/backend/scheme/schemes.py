@@ -15,12 +15,13 @@ class ProductoSchemaGetAll(BaseModel):
 class ProductoSchemaDelete(BaseModel):
     pass
     
-class ProductoSchemaUpdate(BaseModel):
+class ProductoUpdateSchema(BaseModel):
     nombre: Optional[str] = None
     descripcion: Optional[str] = None
     precio: Optional[float] = None
-    foto: Optional[str] = None
-    
+
+    class Config:
+        orm_mode = True  # Esto permite usar el modelo directamente con las consultas ORM
 class ProductoSchemaCreate(BaseModel):
     codigo: int
     nombre: str

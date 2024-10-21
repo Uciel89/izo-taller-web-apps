@@ -10,8 +10,9 @@ Base, SessionLocal, engine = bbdd.iniciar_conexion()
 class Producto(Base):
     __tablename__ = 'productos'
 
-    codigo = Column(Integer, primary_key=True, index=True)
+    codigo = Column(Integer, primary_key=True)
     nombre = Column(String, nullable=False)
     descripcion = Column(String, nullable=True)
     precio = Column(Float, nullable=False)
     foto = Column(String, nullable=True)
+    

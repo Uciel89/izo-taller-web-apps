@@ -1,4 +1,4 @@
-from fastapi import Depends, APIRouter, File, Form, HTTPException, Request, Response, UploadFile
+from fastapi import Body, Depends, APIRouter, File, Form, HTTPException, Request, Response, UploadFile
 
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
@@ -10,11 +10,11 @@ from providers.database import BaseDeDatos
 from models.models import Base, SessionLocal, engine
 from models.models import Producto
 
-from scheme.schemes import ProductoSchemaCreate, ProductoSchemaDelete, ProductoSchemaGetAll, ProductoSchemaGetOne, ProductoSchemaUpdate
+from scheme.schemes import ProductoSchemaGetOne, ProductoUpdateSchema
 
 import os
 import logging
-from typing import Optional, Type, TypeVar
+from typing import Annotated, Optional, Type, TypeVar
 import aiofiles
 
 logger = logging.getLogger(f'{__name__}')
@@ -33,7 +33,7 @@ T = TypeVar('T', bound=BaseModel)
 
 router = APIRouter(prefix="/productos")
 
-@router.get('/', tags=["Productos"])
+@router.get('', tags=["Productos"])
 async def obtener_productos(producto_id: Optional[int] = None, db: Session = Depends(get_db)):
     if producto_id:
         db_producto = db.query(Producto).filter(Producto.codigo == producto_id).first()
@@ -48,17 +48,15 @@ async def obtener_productos(producto_id: Optional[int] = None, db: Session = Dep
 
 @router.get('/imagen/{id_imagen}', tags=["Productos"])
 async def obtener_imagen(id_imagen: int, db: Session = Depends(get_db)):
-    try:
-        producto_db = db.query(Producto).filter(Producto.codigo == id_imagen).first()
-    except Exception as error:
-        logger.exception(error.args)
+    producto_db = db.query(Producto).filter(Producto.codigo == id_imagen).first()
+    if not producto_db:
         return JSONResponse(content= {'estado':'no existe registro'}, status_code= 404)
     
     if os.path.exists(f'uploads/{producto_db.foto}'):
         return FileResponse(f'uploads/{producto_db.foto}')
     return JSONResponse(content= {'estado':'foto no encontrada'}, status_code= 404)
 
-@router.post('/', tags=["Productos"], response_model=ProductoSchemaGetOne)
+@router.post('', tags=["Productos"], response_model=ProductoSchemaGetOne)
 async def crear_producto(   
                             codigo: int = Form(...),
                             nombre: str = Form(...),
@@ -89,15 +87,65 @@ async def crear_producto(
         return {"estado": error.args}
     
 @router.put('/{producto_id}', tags=["Productos"])
-async def modificar_producto(producto_id: Optional[int] = None, db: Session = Depends(get_db)):
-    pass
+async def modificar_producto(
+    producto_id: int,
+    nombre: Optional[str] = Form(None),
+    descripcion: Optional[str] = Form(None),
+    precio: Optional[float] = Form(0),
+    foto: Annotated[bytes | None, File()] = None,
+    db: Session = Depends(get_db)
+):
+    try:
+        producto = db.query(Producto).filter(Producto.codigo == producto_id).first()
+
+        if not producto:
+            return JSONResponse(content={"estado": "producto no encontrado"}, status_code=404)
+
+        if nombre is not None:
+            producto.nombre = nombre
+        if descripcion is not None:
+            producto.descripcion = descripcion
+        if precio is not None:
+            producto.precio = precio
+
+        if foto:
+            old_foto_path = 'uploads/' + producto.foto if producto.foto else None
+
+            producto.foto = f'{producto.codigo}.{foto.filename.split(".")[-1]}'
+            new_foto_path = 'uploads/' + producto.foto
+
+            if old_foto_path and os.path.exists(old_foto_path):
+                os.remove(old_foto_path)
+
+            async with aiofiles.open(new_foto_path, 'wb') as out_file:
+                content = await foto.read()
+                await out_file.write(content)
+
+        db.commit()
+        db.refresh(producto)
+
+        return producto.__dict__
+
+    except Exception as error:
+        logger.exception('Error al modificar el producto')
+        return JSONResponse(content={"estado": "error al modificar el producto", "detalle": str(error)}, status_code=500)
 
 @router.delete('/{producto_id}', tags=["Productos"])
-async def eliminar_producto(producto_id: Optional[int] = None, db: Session = Depends(get_db)):
+async def eliminar_producto(producto_id: int, db: Session = Depends(get_db)):
     try:
-        db.query(Producto).filter(Producto.codigo == producto_id).delete()
+        producto = db.query(Producto).filter(Producto.codigo == producto_id).first()
+        if not producto:
+            return JSONResponse(content={"estado": "producto no encontrado"}, status_code=404)
+
+        db.delete(producto)
         db.commit()
-        return JSONResponse(content={"estado":"producto eliminado correctamente"})
+
+        foto_path = 'uploads/' + producto.foto
+        if os.path.exists(foto_path):
+            os.remove(foto_path)
+
+        return JSONResponse(content={"estado": "producto eliminado correctamente"})
+    
     except Exception as error:
-        logger.exception('Error durante consulta de delete')
-        return JSONResponse(content={"estado":"producto no encontrado"}, status_code=404)
+        logger.exception('Error durante la eliminación del producto')
+        return JSONResponse(content={"estado": "error durante la eliminación", "detalle": str(error)}, status_code=500)

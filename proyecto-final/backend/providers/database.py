@@ -14,15 +14,14 @@ load_dotenv()
 
 class BaseDeDatos():
     def __init__(self):
-        self.db_path = os.getenv("DB_PATH")  # Ruta al archivo SQLite
+        self.db_path = os.getenv("DB_PATH")  
 
     def iniciar_conexion(self):
         SQLALCHEMY_DATABASE_URL = f'sqlite:///{self.db_path}'
-        print(SQLALCHEMY_DATABASE_URL)
         try:
             engine = create_engine(
                 SQLALCHEMY_DATABASE_URL,
-                connect_args={"check_same_thread": False},  # Necesario para SQLite
+                connect_args={"check_same_thread": False}, 
                 echo=True,
             )
             SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
