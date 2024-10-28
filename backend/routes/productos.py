@@ -39,11 +39,11 @@ async def obtener_productos(producto_id: Optional[int] = None, db: Session = Dep
         db_producto = db.query(Producto).filter(Producto.codigo == producto_id).first()
         logger.info(db_producto)
         if not db_producto:
-            return JSONResponse(status_code=404, content={"estado":"producto no encontrado"})
+            return {}
         return db_producto.__dict__
     db_producto = db.query(Producto).filter().all()
     if not db_producto:
-        return JSONResponse(status_code=404, content={"estado":"producto no encontrado"})
+        return {}
     return {'lista_productos': [producto.__dict__ for producto in db_producto]}
 
 @router.get('/imagen/{id_imagen}', tags=["Productos"])
@@ -84,7 +84,7 @@ async def crear_producto(
         return producto_db.__dict__
     except Exception as error:
         logger.error(error.args)
-        return {"estado": error.args}
+        return JSONResponse(content={"estado": error.args}, status_code = 404)
     
 @router.put('/{producto_id}', tags=["Productos"])
 async def modificar_producto(
@@ -92,7 +92,7 @@ async def modificar_producto(
     nombre: Optional[str] = Form(None),
     descripcion: Optional[str] = Form(None),
     precio: Optional[float] = Form(0),
-    foto: Annotated[bytes | None, File()] = None,
+    foto: Optional[UploadFile] = File(None),
     db: Session = Depends(get_db)
 ):
     try:
