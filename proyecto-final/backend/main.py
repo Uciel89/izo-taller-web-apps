@@ -4,6 +4,8 @@ from starlette.background import BackgroundTask
 
 from sqlalchemy.orm import Session
 
+from fastapi.middleware.cors import CORSMiddleware
+
 import logging
 from pathlib import Path
 
@@ -73,6 +75,19 @@ def get_db():
     finally:
         db.close()
         
+origins = [
+    "http://127.0.0.1:5500"
+]
+
+# Agregar middleware para CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 @app.get("/")
 async def ping():
     return 'pong'
