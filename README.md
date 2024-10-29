@@ -1,51 +1,40 @@
 # izo-taller-web-apps
 Repositorio del taller de Introducción a la creación de aplicaciones web modernas
 
-Este proyecto es una aplicación backend desarrollada con FastAPI y SQLAlchemy.
+## Material de interes 📚
+Contenido para profundizar en el desarrollo `frontend`
 
-## Requisitos
+`HTML`
 
-- Python 3.8 o superior
-- pip (gestor de paquetes de Python)
+- [Video introductorio](https://youtu.be/3nYLTiY5skU?si=1Pzj5EwqqpBER6GL)
+- [Guía de lectura](https://lenguajehtml.com/html/)
 
+`CSS`
 
-### Creación de entorno virtual y configuración
+- [Video introductorio](https://youtu.be/hrxjBqZWsb0?si=FNO5LFDmYCQwkBXP)
+- [Guía de lectura](https://lenguajecss.com/css/)
 
-Para crear un entorno virtual, ejecuta el siguiente comando:
+`JavaScript`
 
-- En Windows:
-  ```sh
-  python -m venv venv
-    ```
-- En Linux:
-  ```
-  python3 -m venv venv
-  ```
-Activar Entorno VirtualPara activar el entorno virtual, usa el siguiente comando:
-- En Windows:
-  ```
-  venv\Scripts\activate
-  ```
-- En Linux:
-  ```
-  source venv/bin/activate
-  ```
-Instalar DependenciasCon el entorno virtual activado, instala los paquetes necesarios ejecutando:
-  ```
-  pip install -r requirements.txt
-  ```
-#### Configuración de la Base de Datos
+- [Video introductorio](https://youtu.be/Z34BF9PCfYg?si=l7r4uY-Vn2f6Phjg)
+- [Guía de lectura](https://lenguajejs.com/javascript/)
 
-Crea un directorio uploads dentro del backend y un archivo .env en la raíz del proyecto con la variable DB_PATH. Ejemplo:
-```
-DB_PATH='seminario.db'
-```
-Ejecución del ProyectoPara ejecutar el proyecto, sigue estos pasos:
-- Navega al directorio del backend:
-  ```
-  cd proyecto-final/backend
-  ```
-- Inicia la aplicación con Hypercorn:
-  ```
-  hypercorn main:app
-  ```
+Curso la libreria para frontend mas utilizada en el mundo: `React`
+
+> [!TIP]
+> Revisar este contenido una vez profundizado en los conseptos basicos del desarrollo web
+
+- [Curso en videos](https://youtube.com/playlist?list=PLUofhDIg_38q4D0xNWp7FEHOTcZhjWJ29&si=q7U6rDskrL6HF2kD)
+- [Curso mediante un sito web](https://fullstackopen.com/es/)
+
+Contenido para profundizar en el desarrollo `backend`
+
+`python`
+
+- [Video introductorio](https://www.youtube.com/watch?v=Kp4Mvapo5kc)
+- [Guía de lectura](https://www.w3schools.com/python/default.asp)
+
+`backend fastAPI + MongoDB`
+
+- [Video introductorio](https://www.youtube.com/watch?v=_y9qQZXE24A)
+- [Documentación fastAPI](https://fastapi.tiangolo.com/)
