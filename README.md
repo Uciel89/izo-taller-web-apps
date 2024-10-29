@@ -1,7 +1,7 @@
 # izo-taller-web-apps
 Repositorio del taller de Introducción a la creación de aplicaciones web modernas
 
-## Material de interes 📚
+## Material de interés 📚
 Contenido para profundizar en el desarrollo `frontend`
 
 `HTML`
@@ -22,7 +22,7 @@ Contenido para profundizar en el desarrollo `frontend`
 Curso la libreria para frontend mas utilizada en el mundo: `React`
 
 > [!TIP]
-> Revisar este contenido una vez profundizado en los conseptos basicos del desarrollo web
+> Revisar este contenido una vez profundizado en los conseptos básicos del desarrollo web
 
 - [Curso en videos](https://youtube.com/playlist?list=PLUofhDIg_38q4D0xNWp7FEHOTcZhjWJ29&si=q7U6rDskrL6HF2kD)
 - [Curso mediante un sito web](https://fullstackopen.com/es/)
