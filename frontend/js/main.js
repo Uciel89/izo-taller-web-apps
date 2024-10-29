@@ -26,14 +26,15 @@ async function mostrarProductos() {
   try {
     const listaProductos = document.getElementById("table-lista-productos");
     const response = await obtenerProductosRequest();
-
+    let productos = [];
+    
     if(Object.keys(response).length === 0) {
       listaProductos.innerHTML = "";
       const row = document.createElement("tr");
       row.innerHTML = `<td colspan="6" class="text-center">No hay datos</td>`
       listaProductos.appendChild(row);
     } else {
-      const productos = response.lista_productos;
+      productos = response.lista_productos;
       listaProductos.innerHTML = "";
 
       productos.map((producto, index) => {
